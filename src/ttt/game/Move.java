@@ -2,7 +2,7 @@ package ttt.game;
 
 public class Move implements IMove {
 	private int row,column = 0;
-	private char status = 'n';
+	private char status = ' ';
 	
 	public Move(int r, int c) {
 		this.row = r;

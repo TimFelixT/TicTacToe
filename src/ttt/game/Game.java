@@ -15,26 +15,46 @@ public class Game implements IGame {
 	private Move eight = new Move(3,2);
 	private Move nine = new Move(3,3);
 	
+	List<IMove> remainingMoves  =  new ArrayList<IMove>();
+	
 	private char[][] board = new char [3][3];
 	private int lastChanged;
 	
-	List<IMove> remainingMoves  =  new ArrayList<IMove>();
 	
-	
-	
+		
 	private boolean whoseturn = false;
 	Player playerOne;
 	Player playerTwo;
 	private boolean gameended = false;
 	
+	public Game() {
+		this.newList();
+	}
+	
+	public void newList() {		
+		remainingMoves.add(one);
+		remainingMoves.add(two);
+		remainingMoves.add(three);
+		remainingMoves.add(four);
+		remainingMoves.add(five);
+		remainingMoves.add(six);
+		remainingMoves.add(seven);
+		remainingMoves.add(eight);
+		remainingMoves.add(nine);
+	}
+	
+	
+	
 	@Override
 	public void setPlayerX(IPlayer p) {
-		playerOne.equals(p);
+		playerOne=(Player) p;
+		playerOne.symbol = 'x';
 	}
 
 	@Override
 	public void setPlayerO(IPlayer p) {
-		playerTwo.equals(p);
+		playerTwo=(Player) p;
+		playerTwo.symbol = 'o';
 	}
 
 	@Override
@@ -53,6 +73,11 @@ public class Game implements IGame {
 
 	@Override
 	public void doMove(IMove m) {
+		Move helpm = new Move(1,1);
+		helpm.equals(m);
+		helpm.setStatus(this.currentPlayer().getSymbol());
+		m.equals(helpm);
+		remainingMoves.remove(m);
 		whoseturn ^= true;
 	}
 
@@ -74,7 +99,7 @@ public class Game implements IGame {
 
 	@Override
 	public void printField() {
-		
+		System.out.print("\n " + one.getStatus() + " |  " + two.getStatus() + "  |  " + three.getStatus() + "\n-------------\n" + four.getStatus() + "  |  " + five.getStatus() + "  |  " + six.getStatus() + "\n-------------\n" + seven.getStatus() + "  |  " + eight.getStatus() + "  |  " + nine.getStatus() + "\n\n");
 	}
 
 }

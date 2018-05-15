@@ -5,6 +5,7 @@ import ttt.strategy.IGameStrategy;
 public class Player implements IPlayer{
 	
 	private IGameStrategy gameStrategy;
+	protected char symbol = ' ';
 	
 	@Override
 	public void setStrategy(IGameStrategy s) {
@@ -18,7 +19,7 @@ public class Player implements IPlayer{
 
 	@Override
 	public char getSymbol() {
-		return 0;
+		return symbol;
 	}
 	
 

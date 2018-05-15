@@ -22,7 +22,7 @@ public class Game implements IGame {
 	
 	
 		
-	private boolean whoseturn = false;
+	Player currentPlayer;
 	Player playerOne;
 	Player playerTwo;
 	private boolean gameended = false;
@@ -59,11 +59,7 @@ public class Game implements IGame {
 
 	@Override
 	public IPlayer currentPlayer() {
-		if(whoseturn == false) {
-			return playerOne;
-		} else {
-			return playerTwo;
-		}
+		if(this.currentPlayer == null) this.currentPlayer = this.playerOne;
 	}
 
 	@Override

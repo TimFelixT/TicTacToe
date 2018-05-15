@@ -60,6 +60,7 @@ public class Game implements IGame {
 	@Override
 	public IPlayer currentPlayer() {
 		if(this.currentPlayer == null) this.currentPlayer = this.playerOne;
+		return this.currentPlayer;
 	}
 
 	@Override

@@ -7,6 +7,10 @@ public class Player implements IPlayer{
 	private IGameStrategy gameStrategy;
 	protected char symbol = ' ';
 	
+	public Player(char symbol) {
+		this.symbol = symbol;
+	}
+	
 	@Override
 	public void setStrategy(IGameStrategy s) {
 		this.gameStrategy = s;

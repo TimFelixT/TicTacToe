@@ -2,7 +2,6 @@ package ttt.game;
 
 public class Move implements IMove {
 	private int row,column = 0;
-	private char status = ' ';
 	
 	public Move(int r, int c) {
 		this.row = r;
@@ -17,11 +16,17 @@ public class Move implements IMove {
 	public int getColumn() {
 		return column;
 	}
-	public char getStatus() {
-		return status;
-	}
-	public void setStatus(char status) {
-		this.status = status;
-	}
 
+	@Override
+	public boolean equals(Object o) {
+		if(!(o instanceof IMove))return false;
+		
+		if(this.row == ((IMove)o).getRow()) {
+			if(this.column == ((IMove)o).getColumn()) {
+				return true;
+			}
+			else return false;
+		}
+		return false;
+	}
 }

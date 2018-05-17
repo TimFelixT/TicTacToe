@@ -5,56 +5,29 @@ import java.util.List;
 
 public class Game implements IGame {
 	
-	private Move one = new Move(1,1);
-	private Move two = new Move(1,2);
-	private Move three = new Move(1,3);
-	private Move four = new Move(2,1);
-	private Move five = new Move(2,2);
-	private Move six = new Move(2,3);
-	private Move seven = new Move(3,1);
-	private Move eight = new Move(3,2);
-	private Move nine = new Move(3,3);
-	
-	List<IMove> remainingMoves  =  new ArrayList<IMove>();
-	
 	private char[][] board = new char [3][3];
-	private int lastChanged;
-	
-	
+	private int draw = 0;
 		
-	Player currentPlayer;
-	Player playerOne;
-	Player playerTwo;
-	private boolean gameended = false;
+	IPlayer currentPlayer;
+	IPlayer playerOne;
+	IPlayer playerTwo;
 	
 	public Game() {
-		this.newList();
+		for(int row = 0; row < 3; row++) {
+			for(int column = 0; column < 3; column++) {
+				board[row][column] = ' ';
+			}
+		}
 	}
-	
-	public void newList() {		
-		remainingMoves.add(one);
-		remainingMoves.add(two);
-		remainingMoves.add(three);
-		remainingMoves.add(four);
-		remainingMoves.add(five);
-		remainingMoves.add(six);
-		remainingMoves.add(seven);
-		remainingMoves.add(eight);
-		remainingMoves.add(nine);
-	}
-	
-	
 	
 	@Override
 	public void setPlayerX(IPlayer p) {
-		playerOne=(Player) p;
-		playerOne.symbol = 'x';
+		playerOne = p;
 	}
 
 	@Override
 	public void setPlayerO(IPlayer p) {
-		playerTwo=(Player) p;
-		playerTwo.symbol = 'o';
+		playerTwo = p;
 	}
 
 	@Override
@@ -65,38 +38,71 @@ public class Game implements IGame {
 
 	@Override
 	public List<IMove> remainingMoves() {
+		List<IMove> remainingMoves = new ArrayList<IMove>();
+		for(int row = 0; row < 3; row++) {
+			for(int column = 0; column < 3; column++) {
+				if(this.board[row][column] == ' ') {
+					remainingMoves.add(new Move(row, column));
+				}
+			}
+		}
 		return remainingMoves;
 	}
 
 	@Override
 	public void doMove(IMove m) {
-		Move helpm = new Move(1,1);
-		helpm.equals(m);
-		helpm.setStatus(this.currentPlayer().getSymbol());
-		m.equals(helpm);
-		remainingMoves.remove(m);
-		whoseturn ^= true;
+		if(!(remainingMoves().contains(m))) {
+			return;
+		}
+		this.board[m.getRow()][m.getColumn()] = this.currentPlayer.getSymbol();
+		
+		if(this.currentPlayer == playerOne)this.currentPlayer=playerTwo;
+		else this.currentPlayer=this.playerOne;
 	}
 
 	@Override
 	public void undoMove(IMove m) {
-		whoseturn ^= true;
+		this.board[m.getRow()][m.getColumn()] = ' ';
+		if(this.currentPlayer == playerOne)this.currentPlayer=playerTwo;
+		else this.currentPlayer=this.playerOne;
 	}
 
 	@Override
 	public boolean ended() {
-		return gameended;
+		if (((board[0][0] == board[0][1] && board[0][1] != ' ') && board[0][0] == board[0][2] ||
+				(board[1][0] == board[1][1] && board[1][1] != ' ') && board[1][0] == board[1][2] ||
+                (board[2][0] == board[2][1] && board[2][1] != ' ') && board[2][0] == board[2][2] ||
+                (board[0][0] == board[1][0] && board[1][0] != ' ') && board[0][0] == board[2][0] ||
+                (board[0][1] == board[1][1] && board[1][1] != ' ') && board[0][0] == board[2][1] ||
+                (board[0][2] == board[1][2] && board[1][2] != ' ') && board[0][2] == board[2][2] ||
+                (board[0][0] == board[1][1] && board[1][1] != ' ') && board[0][0] == board[2][2] ||
+                (board[2][0] == board[1][1] && board[1][1] != ' ') && board[2][0] == board[0][2] )){			
+            return true;
+		}else if(remainingMoves().size() == 0) {
+			draw = 1;
+			return true;			
+        }
+        return false;
 	}
 
 	@Override
 	public int evalState(IPlayer p) {
-		// TODO Auto-generated method stub
-		return 0;
+		int win = 0;
+		if(this.remainingMoves().size() == 0 && draw == 1) {
+			win = 0;
+		} else if(this.remainingMoves().size()%2 == 0 && this.ended() == true) {
+			win = 1;
+		} else if(this.remainingMoves().size()%2 != 0 && this.ended() == true) {
+			win = -1;
+		}
+		if(p.getSymbol() == 'o') {
+			win *= -1;
+		}			
+		return win;
 	}
 
 	@Override
 	public void printField() {
-		System.out.print("\n " + one.getStatus() + " |  " + two.getStatus() + "  |  " + three.getStatus() + "\n-------------\n" + four.getStatus() + "  |  " + five.getStatus() + "  |  " + six.getStatus() + "\n-------------\n" + seven.getStatus() + "  |  " + eight.getStatus() + "  |  " + nine.getStatus() + "\n\n");
+		System.out.print("\n " + board[0][0] + " |  " + board[0][1] + "  | " + board[0][2] + "\n-------------\n " + board[1][0] + " |  " + board[1][1] + "  | " + board[1][2] + "\n-------------\n " + board[2][0] + " |  " + board[2][1] + "  | " + board[2][2] + "\n\n");
 	}
-
 }

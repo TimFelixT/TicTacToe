@@ -94,9 +94,6 @@ public class Game implements IGame {
 			win = 1;
 		} else if(this.remainingMoves().size()%2 != 0 && this.ended() == true) {
 			win = -1;
-		}
-		if(p.getSymbol() == 'o') {
-			win *= -1;
 		}			
 		return win;
 	}

@@ -30,13 +30,13 @@ public class Main {
 			game.doMove(game.currentPlayer().nextMove(game));
 		}
 		game.printField();
-		int x = game.evalState(game.currentPlayer());
-		if(x == 0) {
+		if(game.evalState(game.currentPlayer()) == 0) {
 			System.out.println("Unentschieden");
-		} else if(x == -1){
+		} else if(game.evalState(game.currentPlayer()) == -1){
 			System.out.println("Spieler " + game.currentPlayer().getSymbol() + " verliert.");				
 		}		
 		sc.close();
+		
 	}
 
 }
